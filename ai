@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShortsAI Studio</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+.container{
+  max-width:800px;
+  margin:auto;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+  color:#60a5fa;
+}
+
+textarea{
+  width:100%;
+  height:140px;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+}
+
+button{
+  margin-top:10px;
+  padding:12px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#1d4ed8;
+}
+
+.bar{
+  height:12px;
+  background:#334155;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+#fill{
+  height:100%;
+  width:0%;
+  background:#22c55e;
+  transition:1s;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-top:20px;
+}
+
+.card{
+  background:#1e293b;
+  padding:15px;
+  border-radius:15px;
+}
+
+pre{
+  white-space:pre-wrap;
+}
+
+.phone{
+  width:100%;
+  aspect-ratio:9/16;
+  background:black;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+}
+
+.phone img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.caption{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  background:rgba(0,0,0,0.6);
+  text-align:center;
+  padding:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎬 ShortsAI</h1>
+
+<textarea id="story">소년이 타임머신을 발견한다</textarea>
+
+<button onclick="generate()">쇼츠 생성</button>
+
+<div class="bar">
+<div id="fill"></div>
+</div>
+
+<p id="status">대기중...</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>📜 대본</h3>
+<pre id="script">아직 없음</pre>
+
+<button onclick="speak()">🔊 음성 재생</button>
+</div>
+
+<div class="card">
+
+<div class="phone">
+<img id="img" src="https://picsum.photos/400/700">
+<div class="caption" id="caption">미리보기</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let scriptText="";
+
+function generate(){
+
+  let fill=document.getElementById("fill");
+  let status=document.getElementById("status");
+
+  fill.style.width="0%";
+
+  status.innerText="대본 생성중...";
+
+  setTimeout(()=>{
+    fill.style.width="40%";
+    status.innerText="이미지 생성중...";
+  },800);
+
+  setTimeout(()=>{
+    fill.style.width="80%";
+    status.innerText="음성 생성중...";
+  },1600);
+
+  setTimeout(()=>{
+
+    fill.style.width="100%";
+    status.innerText="완료";
+
+    scriptText=
+`소년은 우연히 타임머신을 발견한다.
+그는 미래로 이동한다.
+위험을 발견한다.
+세상을 바꾸기 위한 여정을 시작한다.`;
+
+    document.getElementById("script").innerText=scriptText;
+
+    document.getElementById("img").src=
+    "https://picsum.photos/400/700?random="+Math.random();
+
+    document.getElementById("caption").innerText="쇼츠 생성 완료";
+
+  },2400);
+}
+
+function speak(){
+  if(!scriptText){
+    alert("먼저 생성하세요");
+    return;
+  }
+
+  let s=new SpeechSynthesisUtterance(scriptText);
+  s.lang="ko-KR";
+  speechSynthesis.speak(s);
+}
+
+</script>
+
+</body>
+</html>
